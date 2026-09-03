@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI影视创作者个人作品集，展示AI短剧与AI广告片。">
+    <title>AI影视创作者作品集</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <nav aria-label="主导航">
+        <a href="#home">首页</a><a href="#work">作品</a><a href="#about">关于我</a><a href="#contact">联系我</a>
+      </nav>
+    </header>
+    <main>
+      <section id="home" aria-labelledby="hero-title">
+        <p>AI FILM CREATOR</p>
+        <h1 id="hero-title">用AI探索影像叙事的更多可能。</h1>
+        <a href="#work">查看作品</a><a href="#contact">联系我</a>
+      </section>
+      <section id="work" aria-labelledby="work-title">
+        <h2 id="work-title">作品</h2>
+        <div id="work-filters" aria-label="作品分类"></div>
+        <div id="work-grid" aria-live="polite"></div>
+      </section>
+      <section id="about" aria-labelledby="about-title">
+        <h2 id="about-title">关于我</h2>
+        <p>我是一名AI影视创作者，专注于AI短剧和AI广告片制作。</p>
+      </section>
+      <section id="contact" aria-labelledby="contact-title">
+        <h2 id="contact-title">期待与你建立联系</h2>
+        <a href="https://github.com/niunaguo0-pixel" target="_blank" rel="noreferrer">GitHub · niunaguo0-pixel</a>
+      </section>
+    </main>
+    <footer><p>© 2026 AI Film Creator</p></footer>
+    <dialog id="video-dialog" aria-labelledby="video-title">
+      <button type="button" data-close-dialog aria-label="关闭视频">关闭</button>
+      <h2 id="video-title"></h2>
+      <video controls playsinline preload="metadata"></video>
+    </dialog>
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
