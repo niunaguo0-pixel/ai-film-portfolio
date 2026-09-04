@@ -64,7 +64,8 @@
     <dialog id="video-dialog" aria-labelledby="video-title">
       <button class="button dialog-close" type="button" data-close-dialog aria-label="关闭视频">关闭 <span aria-hidden="true">×</span></button>
       <h2 id="video-title"></h2>
-      <video controls playsinline preload="metadata"></video>
+      <p id="video-status" role="status">视频素材即将更新</p>
+      <video controls playsinline preload="metadata" hidden></video>
     </dialog>
     <script type="module" src="./src/app.js"></script>
   </body>
