@@ -8,34 +8,61 @@
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
+    <a class="skip-link" href="#main-content">跳至主要内容</a>
     <header class="site-header">
-      <nav aria-label="主导航">
-        <a href="#home">首页</a><a href="#work">作品</a><a href="#about">关于我</a><a href="#contact">联系我</a>
-      </nav>
+      <div class="container header-inner">
+        <span class="header-caption">个人作品集 <span aria-hidden="true">/</span> 2026</span>
+        <nav aria-label="主导航">
+          <a href="#home">首页</a><a href="#work">作品</a><a href="#about">关于我</a><a href="#contact">联系我</a>
+        </nav>
+      </div>
     </header>
-    <main>
-      <section id="home" aria-labelledby="hero-title">
-        <p>AI FILM CREATOR</p>
-        <h1 id="hero-title">用AI探索影像叙事的更多可能。</h1>
-        <a href="#work">查看作品</a><a href="#contact">联系我</a>
+    <main id="main-content">
+      <section id="home" class="hero" aria-labelledby="hero-title">
+        <div class="container hero-layout">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span> AI FILM CREATOR</p>
+            <h1 id="hero-title"><span>用 AI 探索</span><span>影像叙事的</span><span class="hero-title-accent">更多可能。</span></h1>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#work">查看作品 <span aria-hidden="true">↗</span></a>
+              <a class="button button-text" href="#contact">联系我 <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="film-frame" aria-hidden="true">
+              <div class="frame-topline"><span>LIGHT / FRAME</span><span>16:9</span></div>
+              <div class="light-plane"></div>
+              <div class="frame-inner"></div>
+              <div class="frame-caption"><span class="frame-word">Cinema.</span><span class="frame-cross">+</span></div>
+            </div>
+            <p class="visual-note">光影构图 <span aria-hidden="true">/</span> 非作品画面</p>
+          </div>
+          <div class="hero-bottom"><span>AI 短剧 <span aria-hidden="true">/</span> AI 广告片</span><a href="#work">向下浏览 <span aria-hidden="true">↓</span></a></div>
+        </div>
       </section>
       <section id="work" aria-labelledby="work-title">
-        <h2 id="work-title">作品</h2>
-        <div id="work-filters" aria-label="作品分类"></div>
-        <div id="work-grid" aria-live="polite"></div>
+        <div class="container">
+          <div class="section-heading"><div><p class="eyebrow">01 / WORK</p><h2 id="work-title">作品</h2></div><p class="section-aside">AI 短剧 / AI 广告片</p></div>
+          <div id="work-filters" class="work-filters" aria-label="作品分类"></div>
+          <div id="work-grid" class="work-grid" aria-live="polite"></div>
+        </div>
       </section>
       <section id="about" aria-labelledby="about-title">
-        <h2 id="about-title">关于我</h2>
-        <p>我是一名AI影视创作者，专注于AI短剧和AI广告片制作。</p>
+        <div class="container about-layout">
+          <div class="section-heading"><div><p class="eyebrow">02 / ABOUT</p><h2 id="about-title">关于我</h2></div></div>
+          <div class="about-copy"><p>我是一名AI影视创作者，专注于AI短剧和AI广告片制作。</p><span class="about-rule" aria-hidden="true"></span></div>
+        </div>
       </section>
       <section id="contact" aria-labelledby="contact-title">
-        <h2 id="contact-title">期待与你建立联系</h2>
-        <a href="https://github.com/niunaguo0-pixel" target="_blank" rel="noreferrer">GitHub · niunaguo0-pixel</a>
+        <div class="container contact-layout">
+          <div class="section-heading"><div><p class="eyebrow">03 / CONTACT</p><h2 id="contact-title">期待与你<br>建立联系<span class="contact-dot">。</span></h2></div></div>
+          <a class="button contact-link" href="https://github.com/niunaguo0-pixel" target="_blank" rel="noreferrer"><span><span class="contact-platform">GITHUB</span><span>niunaguo0-pixel</span></span><span class="contact-arrow" aria-hidden="true">↗</span></a>
+        </div>
       </section>
     </main>
-    <footer><p>© 2026 AI Film Creator</p></footer>
+    <footer class="site-footer"><div class="container footer-inner"><p>© 2026 AI Film Creator</p><a href="#home">回到顶部 <span aria-hidden="true">↑</span></a></div></footer>
     <dialog id="video-dialog" aria-labelledby="video-title">
-      <button type="button" data-close-dialog aria-label="关闭视频">关闭</button>
+      <button class="button dialog-close" type="button" data-close-dialog aria-label="关闭视频">关闭 <span aria-hidden="true">×</span></button>
       <h2 id="video-title"></h2>
       <video controls playsinline preload="metadata"></video>
     </dialog>
