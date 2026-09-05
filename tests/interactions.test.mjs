@@ -128,7 +128,7 @@ test("AI短剧地区筛选与切换重置", () => {
   assert.equal(nodes["#work-grid"].children.length, 2);
   assert.equal(nodes["#work-grid"].children[0].children[0].dataset.workId, "dont-look-back");
   regions.emit("click", { target: regions.children[2] });
-  assert.equal(nodes["#work-grid"].children.length, 1);
+  assert.equal(nodes["#work-grid"].children.length, 2);
   assert.equal(nodes["#work-grid"].children[0].children[0].dataset.workId, "guiyanlou");
   main.emit("click", { target: main.children[2] });
   assert.equal(regions.hidden, true);

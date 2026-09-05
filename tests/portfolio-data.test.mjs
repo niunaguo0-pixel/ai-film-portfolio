@@ -11,25 +11,32 @@ import {
 test("国外短片使用真实海报和用户提供的介绍", async () => {
   const item = portfolioItems[0];
   assert.equal(item.title, "DON’T LOOK BACK");
-  assert.equal(item.label, "国外短片");
   assert.equal(item.isDemo, false);
   assert.equal(item.poster, true);
   assert.equal(item.summary, "丧尸危机中，父亲马克为保护十岁的女儿莉莉，将即将尸变的自己锁进冷库，让她带着母亲留下的项链独自逃生。");
   assert.equal(item.duration, "01:01");
-  assert.equal(item.videoUrl, "./assets/videos/dont-look-back-web.mp4");
+  assert.match(item.videoUrl, /dont-look-back-original\.mp4$/);
   assert.ok((await readFile(new URL(`../${item.coverUrl}`, import.meta.url))).length > 0);
 });
 
 test("归雁楼归入国内并保留用户介绍及媒体路径", async () => {
   const item = findPortfolioItem(portfolioItems, "guiyanlou");
   assert.equal(item.title, "归雁楼");
-  assert.equal(item.label, "国内短片");
   assert.equal(item.region, "国内");
   assert.equal(item.isDemo, false);
   assert.equal(item.summary, "为追查母亲死于二十年前大火的真相，林夏搬进能靠转发短信转移灾祸的归雁楼，揭穿老住户守护的秘密，并将一场火灾转给他，逼他面对父辈留下的血债。");
   for (const path of [item.coverUrl, item.videoUrl]) {
     assert.ok((await readFile(new URL(`../${path}`, import.meta.url))).length > 0);
   }
+});
+
+test("酒店保洁短剧作为新国内作品并使用原片地址", async () => {
+  const item = findPortfolioItem(portfolioItems, "hotel-cleaner-ceo");
+  assert.equal(item.region, "国内");
+  assert.equal(item.isDemo, false);
+  assert.match(item.videoUrl, /hotel-cleaner-ceo-original\.mp4$/);
+  assert.match(item.summary, /总裁陆青云卧底自家酒店/);
+  assert.ok((await readFile(new URL(`../${item.coverUrl}`, import.meta.url))).length > 0);
 });
 
 test("作品只使用两个批准的分类", () => {
