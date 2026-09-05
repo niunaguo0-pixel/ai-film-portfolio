@@ -80,24 +80,26 @@ export const portfolioItems = Object.freeze([
     order: 2
   },
   {
-    id: "ad-afterglow",
-    title: "余光",
+    id: "ad-speed-prologue",
+    title: "疾速序章",
     category: "AI广告片",
     coverUrl: "",
     duration: "00:30",
-    summary: "以光影和材质变化呈现一支克制的品牌概念广告。",
-    videoUrl: "",
+    isDemo: false,
+    summary: "以速度与力量的视觉表达，展现跑车的动感锋芒与驾驭激情。",
+    videoUrl: "https://github.com/niunaguo0-pixel/ai-film-portfolio/releases/download/portfolio-media/speed-prologue-original.mp4",
     accent: "#8a6d4c",
     order: 3
   },
   {
-    id: "ad-zero-coffee",
-    title: "零点咖啡",
+    id: "ad-light-is-her",
+    title: "光，即是她",
     category: "AI广告片",
     coverUrl: "",
-    duration: "00:20",
-    summary: "为夜晚仍在创造的人，保留一段清醒时刻。",
-    videoUrl: "",
+    duration: "00:15",
+    isDemo: false,
+    summary: "以光影映衬珠宝之美，诠释女性自信闪耀的独特魅力。",
+    videoUrl: "https://github.com/niunaguo0-pixel/ai-film-portfolio/releases/download/portfolio-media/light-is-her-original.mp4",
     accent: "#5d493c",
     order: 4
   }

@@ -141,5 +141,6 @@ test("每张作品卡片都有可见的查看影片提示", () => {
     const playButton = card.children[0];
     assert.ok(playButton.children.some(child => child.textContent === "查看影片 ↗"));
     assert.ok(playButton.children.every(child => child.className !== "work-card__duration"));
+    assert.ok(playButton.children.every(child => child.className !== "work-card__index"));
   }
 });

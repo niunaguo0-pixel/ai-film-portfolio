@@ -51,7 +51,6 @@ function createWorkCard(item) {
 
   const metadata = document.createElement("div");
   metadata.className = "work-card__metadata";
-  appendTextElement(metadata, "span", "work-card__index", item.category);
   if (item.isDemo !== false) appendTextElement(metadata, "span", "work-card__demo", "演示项目");
   appendTextElement(playButton, "span", "work-card__title", item.title);
   appendTextElement(playButton, "span", "work-card__summary", item.summary);

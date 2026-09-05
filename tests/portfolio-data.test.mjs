@@ -44,6 +44,15 @@ test("作品只使用两个批准的分类", () => {
   assert.ok(portfolioItems.every((item) => ["AI短剧", "AI广告片"].includes(item.category)));
 });
 
+test("两个正式广告片不使用海报并使用原片地址", () => {
+  const speed = findPortfolioItem(portfolioItems, "ad-speed-prologue");
+  const jewelry = findPortfolioItem(portfolioItems, "ad-light-is-her");
+  assert.deepEqual([speed.title, jewelry.title], ["疾速序章", "光，即是她"]);
+  assert.ok([speed, jewelry].every(item => item.category === "AI广告片" && item.coverUrl === "" && item.isDemo === false));
+  assert.match(speed.videoUrl, /speed-prologue-original\.mp4$/);
+  assert.match(jewelry.videoUrl, /light-is-her-original\.mp4$/);
+});
+
 test("按分类筛选并保留展示顺序", () => {
   const dramas = filterPortfolio(portfolioItems, "AI短剧");
   assert.ok(dramas.length > 0);
