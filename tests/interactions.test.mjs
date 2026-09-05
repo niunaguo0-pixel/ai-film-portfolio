@@ -37,7 +37,7 @@ const source = (await readFile(new URL("../src/app.js", import.meta.url), "utf8"
   .replace(/^import .*?;\s*/s, "");
 
 function setup(withObserver = true) {
-  const nodes = Object.fromEntries(["#work-filters", "#work-grid", "#video-dialog", "video", "#video-title", "#video-status", "[data-close-dialog]"].map(key => [key, new Element()]));
+  const nodes = Object.fromEntries(["#region-filters", "#work-filters", "#work-grid", "#video-dialog", "video", "#video-title", "#video-status", "[data-close-dialog]"].map(key => [key, new Element()]));
   nodes["#video-dialog"].selectors = nodes;
   const sections = ["home", "work", "about", "contact"].map((id, index) => Object.assign(new Element(), { id, rect: { top: index * 1000, bottom: (index + 1) * 1000 } }));
   const links = sections.map(section => { const link = new Element(); link.setAttribute("href", `#${section.id}`); return link; });
@@ -59,7 +59,7 @@ function setup(withObserver = true) {
 
 test("空视频作品打开状态弹窗并锁定滚动", () => {
   const { nodes, document } = setup();
-  const trigger = new Element(); trigger.dataset.workId = data.portfolioItems[0].id;
+  const trigger = new Element(); trigger.dataset.workId = data.portfolioItems.find(item => !item.videoUrl).id;
   nodes["#work-grid"].emit("click", { target: trigger });
   assert.equal(nodes["#video-dialog"].open, true);
   assert.equal(nodes["#video-status"].textContent, "视频素材即将更新");
@@ -118,10 +118,28 @@ test("缺少IntersectionObserver时作品和分类仍正常渲染", () => {
   assert.equal(nodes["#work-filters"].children.length, 3);
 });
 
+test("AI短剧地区筛选与切换重置", () => {
+  const { nodes } = setup();
+  const main = nodes["#work-filters"];
+  const regions = nodes["#region-filters"];
+  main.emit("click", { target: main.children[1] });
+  assert.equal(regions.hidden, false);
+  regions.emit("click", { target: regions.children[1] });
+  assert.equal(nodes["#work-grid"].children.length, 2);
+  assert.equal(nodes["#work-grid"].children[0].children[0].dataset.workId, "dont-look-back");
+  regions.emit("click", { target: regions.children[2] });
+  assert.equal(nodes["#work-grid"].children.length, 1);
+  assert.equal(nodes["#work-grid"].children[0].children[0].dataset.workId, "guiyanlou");
+  main.emit("click", { target: main.children[2] });
+  assert.equal(regions.hidden, true);
+  assert.equal(regions.children[0].getAttribute("aria-pressed"), "true");
+});
+
 test("每张作品卡片都有可见的查看影片提示", () => {
   const { nodes } = setup();
   for (const card of nodes["#work-grid"].children) {
     const playButton = card.children[0];
     assert.ok(playButton.children.some(child => child.textContent === "查看影片 ↗"));
+    assert.ok(playButton.children.every(child => child.className !== "work-card__duration"));
   }
 });

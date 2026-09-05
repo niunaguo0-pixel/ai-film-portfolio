@@ -2,6 +2,24 @@ import { WORK_CATEGORIES, portfolioItems, filterPortfolio, findPortfolioItem } f
 
 const filters = document.querySelector("#work-filters");
 const grid = document.querySelector("#work-grid");
+const regionFilters = document.querySelector("#region-filters");
+for (const region of ["全部", "国外", "国内"]) {
+  const button = document.createElement("button");
+  button.className = "filter-button";
+  button.type = "button";
+  button.dataset.region = region;
+  button.textContent = region;
+  button.setAttribute("aria-pressed", String(region === "全部"));
+  regionFilters.append(button);
+}
+regionFilters.addEventListener("click", event => {
+  const button = event.target.closest(".filter-button");
+  if (!button || !regionFilters.contains(button)) return;
+  for (const option of regionFilters.querySelectorAll(".filter-button")) {
+    option.setAttribute("aria-pressed", String(option === button));
+  }
+  renderWorks("AI短剧", button.dataset.region);
+});
 
 function appendTextElement(parent, tagName, className, text) {
   const element = document.createElement(tagName);
@@ -17,7 +35,7 @@ function createWorkCard(item) {
   card.style.setProperty("--card-accent", item.accent);
 
   const playButton = document.createElement("button");
-  playButton.className = "work-card__play";
+  playButton.className = item.poster ? "work-card__play work-card__play--poster" : "work-card__play";
   playButton.type = "button";
   playButton.dataset.workId = item.id;
   playButton.setAttribute("aria-label", `播放《${item.title}》`);
@@ -33,11 +51,10 @@ function createWorkCard(item) {
 
   const metadata = document.createElement("div");
   metadata.className = "work-card__metadata";
-  appendTextElement(metadata, "span", "work-card__index", item.category);
-  appendTextElement(metadata, "span", "work-card__demo", "演示项目");
+  appendTextElement(metadata, "span", "work-card__index", item.label || item.category);
+  if (item.isDemo !== false) appendTextElement(metadata, "span", "work-card__demo", "演示项目");
   appendTextElement(playButton, "span", "work-card__title", item.title);
   appendTextElement(playButton, "span", "work-card__summary", item.summary);
-  appendTextElement(playButton, "span", "work-card__duration", item.duration);
   appendTextElement(playButton, "span", "work-card__action", "查看影片 ↗").setAttribute("aria-hidden", "true");
   playButton.prepend(metadata);
 
@@ -61,13 +78,15 @@ function renderFilters(activeCategory = "全部") {
   filters.replaceChildren(fragment);
 }
 
-function renderWorks(category = "全部") {
+function renderWorks(category = "全部", region = "全部") {
   const fragment = document.createDocumentFragment();
 
-  for (const item of filterPortfolio(portfolioItems, category)) {
+  const items = filterPortfolio(portfolioItems, category, region);
+  for (const item of items) {
     fragment.append(createWorkCard(item));
   }
 
+  if (!items.length) appendTextElement(fragment, "p", "work-empty", "该分类作品即将更新").setAttribute("role", "status");
   grid.replaceChildren(fragment);
 }
 
@@ -85,6 +104,10 @@ filters.addEventListener("click", (event) => {
   if (!button || !filters.contains(button)) return;
 
   const category = button.dataset.category;
+  regionFilters.hidden = category !== "AI短剧";
+  for (const option of regionFilters.querySelectorAll(".filter-button")) {
+    option.setAttribute("aria-pressed", String(option.dataset.region === "全部"));
+  }
   setActiveFilter(category);
   renderWorks(category);
 });
