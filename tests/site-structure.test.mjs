@@ -22,8 +22,14 @@ test("导航和视频弹窗具备基础可访问性", () => {
   assert.match(html, /<video[^>]+controls/);
 });
 
+test("正式站点地址使用规范域名与分享信息", () => {
+  assert.match(html, /<link rel=["']canonical["'] href=["']https:\/\/niunaguo0-pixel\.github\.io\/["']>/);
+  assert.match(html, /property=["']og:url["'] content=["']https:\/\/niunaguo0-pixel\.github\.io\/["']/);
+  assert.match(html, /property=["']og:site_name["'] content=["']金子轩作品集["']/);
+});
+
 test("不展示已移除的 GitHub 账号卡片，视频控件保留明确标签", () => {
-  assert.doesNotMatch(html, /github\.com\/niunaguo0-pixel|niunaguo0-pixel|contact-platform/i);
+  assert.doesNotMatch(html, /github\.com\/niunaguo0-pixel|contact-platform/i);
   assert.match(html, /data-close-dialog[^>]+aria-label=["']关闭视频["']/);
   assert.match(html, /<video[^>]+playsinline[^>]+preload=["']none["']/);
   assert.doesNotMatch(html, /<video[^>]+autoplay/);

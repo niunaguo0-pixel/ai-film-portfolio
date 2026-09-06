@@ -1,6 +1,8 @@
 # AI Film Portfolio
 
-一个不需要构建步骤的静态单页作品集，使用原生 HTML、CSS 和 ES Module JavaScript 实现。页面包含 AI 短剧与 AI 广告片筛选、作品视频弹窗，以及响应式与基础可访问性处理。
+正式地址：https://niunaguo0-pixel.github.io/
+
+一个不需要构建步骤的静态单页作品集，使用原生 HTML、CSS 和 ES Module JavaScript 实现。页面包含 AI 短剧与 AI 广告片筛选、作品视频弹窗，以及响应式与基础可访问性处理。旧地址 `https://niunaguo0-pixel.github.io/ai-film-portfolio/` 仍可打开，分享与收录以根域名地址为准。
 
 ## 本地预览
 
