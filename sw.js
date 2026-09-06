@@ -1,10 +1,10 @@
-const CACHE_NAME = "ai-film-portfolio-v3";
+const CACHE_NAME = "ai-film-portfolio-v4";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./styles.css",
-  "./src/app.js",
-  "./src/portfolio-data.js",
+  "./src/app.js?v=4",
+  "./src/portfolio-data.js?v=4",
   "./assets/posters-web/dont-look-back.webp",
   "./assets/posters-web/the-last-deal.webp",
   "./assets/posters-web/guiyanlou.webp",
@@ -46,15 +46,18 @@ self.addEventListener("fetch", event => {
     return;
   }
 
-  event.respondWith(
-    caches.match(request).then(cached => {
-      const updated = fetch(request)
+  const isCode = url.pathname.endsWith(".js") || url.pathname.endsWith(".css");
+  if (isCode) {
+    event.respondWith(
+      fetch(request)
         .then(response => {
           if (response.ok) caches.open(CACHE_NAME).then(cache => cache.put(request, response.clone()));
           return response;
         })
-        .catch(() => cached);
-      return cached || updated;
-    })
-  );
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
+
+  event.respondWith(caches.match(request).then(cached => cached || fetch(request)));
 });

@@ -9,7 +9,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 // Removing a linked local asset would leave the served page with a broken request.
 test("HTML引用的本地样式和脚本均存在", async () => {
   const html = await readFile(resolve(root, "index.html"), "utf8");
-  const paths = [...html.matchAll(/(?:href|src)=["']\.\/(?!#)([^"']+)["']/g)].map((match) => match[1]);
+  const paths = [...html.matchAll(/(?:href|src)=["']\.\/(?!#)([^"']+)["']/g)].map((match) => match[1].split("?")[0]);
   assert.ok(paths.includes("styles.css"));
   assert.ok(paths.includes("src/app.js"));
   await Promise.all(paths.map((path) => access(resolve(root, path))));
