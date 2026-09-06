@@ -25,7 +25,7 @@ test("导航和视频弹窗具备基础可访问性", () => {
 test("不展示已移除的 GitHub 账号卡片，视频控件保留明确标签", () => {
   assert.doesNotMatch(html, /github\.com\/niunaguo0-pixel|niunaguo0-pixel|contact-platform/i);
   assert.match(html, /data-close-dialog[^>]+aria-label=["']关闭视频["']/);
-  assert.match(html, /<video[^>]+playsinline[^>]+preload=["']metadata["']/);
+  assert.match(html, /<video[^>]+playsinline[^>]+preload=["']none["']/);
   assert.doesNotMatch(html, /<video[^>]+autoplay/);
 });
 

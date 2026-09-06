@@ -1,2 +1,4 @@
 .worktrees/
 .superpowers/
+.media-originals/
+node_modules/

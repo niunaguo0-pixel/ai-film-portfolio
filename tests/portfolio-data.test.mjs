@@ -15,7 +15,8 @@ test("国外短片使用真实海报和用户提供的介绍", async () => {
   assert.equal(item.poster, true);
   assert.equal(item.summary, "丧尸危机中，父亲马克为保护十岁的女儿莉莉，将即将尸变的自己锁进冷库，让她带着母亲留下的项链独自逃生。");
   assert.equal(item.duration, "01:01");
-  assert.match(item.videoUrl, /dont-look-back-original\.mp4$/);
+  assert.match(item.videoUrl, /dont-look-back-web\.mp4$/);
+  assert.match(item.videoFallbackUrl, /dont-look-back-original\.mp4$/);
   assert.ok((await readFile(new URL(`../${item.coverUrl}`, import.meta.url))).length > 0);
 });
 
@@ -34,7 +35,8 @@ test("酒店保洁短剧作为新国内作品并使用原片地址", async () =>
   const item = findPortfolioItem(portfolioItems, "hotel-cleaner-ceo");
   assert.equal(item.region, "国内");
   assert.equal(item.isDemo, false);
-  assert.match(item.videoUrl, /hotel-cleaner-ceo-original\.mp4$/);
+  assert.match(item.videoUrl, /hotel-cleaner-ceo-web\.mp4$/);
+  assert.match(item.videoFallbackUrl, /hotel-cleaner-ceo-original\.mp4$/);
   assert.match(item.summary, /总裁陆青云卧底自家酒店/);
   assert.ok((await readFile(new URL(`../${item.coverUrl}`, import.meta.url))).length > 0);
 });
@@ -44,13 +46,18 @@ test("作品只使用两个批准的分类", () => {
   assert.ok(portfolioItems.every((item) => ["AI短剧", "AI广告片"].includes(item.category)));
 });
 
-test("两个正式广告片不使用海报并使用原片地址", () => {
+test("两个正式广告片使用网页视频和原片备用地址", async () => {
   const speed = findPortfolioItem(portfolioItems, "ad-speed-prologue");
   const jewelry = findPortfolioItem(portfolioItems, "ad-light-is-her");
   assert.deepEqual([speed.title, jewelry.title], ["疾速序章", "光，即是她"]);
-  assert.ok([speed, jewelry].every(item => item.category === "AI广告片" && item.coverUrl === "" && item.isDemo === false));
-  assert.match(speed.videoUrl, /speed-prologue-original\.mp4$/);
-  assert.match(jewelry.videoUrl, /light-is-her-original\.mp4$/);
+  assert.ok([speed, jewelry].every(item => item.category === "AI广告片" && item.coverUrl && item.isDemo === false));
+  assert.match(speed.videoUrl, /speed-prologue-web\.mp4$/);
+  assert.match(jewelry.videoUrl, /light-is-her-web\.mp4$/);
+  assert.match(speed.videoFallbackUrl, /speed-prologue-original\.mp4$/);
+  assert.match(jewelry.videoFallbackUrl, /light-is-her-original\.mp4$/);
+  for (const item of [speed, jewelry]) {
+    assert.ok((await readFile(new URL(`../${item.coverUrl}`, import.meta.url))).length > 0);
+  }
 });
 
 test("按分类筛选并保留展示顺序", () => {

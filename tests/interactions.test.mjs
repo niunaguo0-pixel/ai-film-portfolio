@@ -37,7 +37,7 @@ const source = (await readFile(new URL("../src/app.js", import.meta.url), "utf8"
   .replace(/^import .*?;\s*/s, "");
 
 function setup(withObserver = true) {
-  const nodes = Object.fromEntries(["#region-filters", "#work-filters", "#work-grid", "#video-dialog", "video", "#video-title", "#video-status", "[data-close-dialog]"].map(key => [key, new Element()]));
+  const nodes = Object.fromEntries(["#region-filters", "#work-filters", "#work-grid", "#video-dialog", "video", "#video-title", "#video-status", "#video-feedback", "#video-retry", "[data-close-dialog]"].map(key => [key, new Element()]));
   nodes["#video-dialog"].selectors = nodes;
   const sections = ["home", "work", "about", "contact"].map((id, index) => Object.assign(new Element(), { id, rect: { top: index * 1000, bottom: (index + 1) * 1000 } }));
   const links = sections.map(section => { const link = new Element(); link.setAttribute("href", `#${section.id}`); return link; });
@@ -76,7 +76,7 @@ for (const closeAction of ["button", "cancel", "backdrop", "native"]) {
     context.openVideo({ title: "真实视频", videoUrl: "/sample.mp4" }, trigger);
     assert.equal(nodes.video.getAttribute("src"), "/sample.mp4");
     assert.equal(nodes.video.hidden, false);
-    assert.equal(nodes["#video-status"].hidden, true);
+    assert.equal(nodes["#video-feedback"].hidden, false);
     if (closeAction === "button") nodes["[data-close-dialog]"].emit("click");
     if (closeAction === "cancel") nodes["#video-dialog"].emit("cancel", { preventDefault() {} });
     if (closeAction === "backdrop") nodes["#video-dialog"].emit("click", { clientX: 0, clientY: 0 });
@@ -95,8 +95,18 @@ test("视频载入失败后隐藏播放器并显示友好提示", () => {
   context.openVideo({ title: "视频", videoUrl: "/missing.mp4" }, new Element());
   nodes.video.emit("error");
   assert.equal(nodes.video.hidden, true);
-  assert.equal(nodes["#video-status"].hidden, false);
+  assert.equal(nodes["#video-feedback"].hidden, false);
+  assert.equal(nodes["#video-retry"].hidden, false);
   assert.match(nodes["#video-status"].textContent, /暂时无法播放/);
+});
+
+test("主视频失败时自动切换备用源", () => {
+  const { nodes, context } = setup();
+  context.openVideo({ title: "视频", videoUrl: "/web.mp4", videoFallbackUrl: "/original.mp4" }, new Element());
+  nodes.video.emit("error");
+  assert.equal(nodes.video.getAttribute("src"), "/original.mp4");
+  assert.equal(nodes.video.hidden, false);
+  assert.match(nodes["#video-status"].textContent, /备用视频源/);
 });
 
 test("导航更新当前区域并在页面底部选择联系区域", () => {

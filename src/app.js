@@ -46,6 +46,8 @@ function createWorkCard(item) {
     cover.src = item.coverUrl;
     cover.alt = "";
     cover.loading = "lazy";
+    cover.decoding = "async";
+    cover.fetchPriority = "low";
     playButton.append(cover);
   }
 
@@ -115,9 +117,24 @@ const dialog = document.querySelector("#video-dialog");
 const video = dialog.querySelector("video");
 const videoTitle = dialog.querySelector("#video-title");
 const videoStatus = dialog.querySelector("#video-status");
+const videoFeedback = dialog.querySelector("#video-feedback");
+const videoRetry = dialog.querySelector("#video-retry");
 let lastTrigger = null;
 let previousOverflow = "";
 let modalActive = false;
+let activeSources = [];
+let activeSourceIndex = 0;
+
+function loadActiveVideo() {
+  const source = activeSources[activeSourceIndex];
+  if (!source) return;
+  video.hidden = false;
+  videoFeedback.hidden = false;
+  videoRetry.hidden = true;
+  videoStatus.textContent = activeSourceIndex === 0 ? "正在加载适合网页播放的版本…" : "正在尝试备用视频源…";
+  video.src = source;
+  video.load();
+}
 
 function openVideo(item, trigger = document.activeElement) {
   if (modalActive) closeVideo();
@@ -126,10 +143,15 @@ function openVideo(item, trigger = document.activeElement) {
   modalActive = true;
   videoTitle.textContent = item.title;
   videoStatus.textContent = "视频素材即将更新";
-  const hasVideo = Boolean(item.videoUrl?.trim());
+  activeSources = [item.videoUrl, item.videoFallbackUrl].filter((source, index, sources) =>
+    source?.trim() && sources.indexOf(source) === index
+  );
+  activeSourceIndex = 0;
+  const hasVideo = activeSources.length > 0;
   video.hidden = !hasVideo;
-  videoStatus.hidden = hasVideo;
-  if (hasVideo) video.src = item.videoUrl;
+  videoFeedback.hidden = false;
+  videoRetry.hidden = true;
+  if (hasVideo) loadActiveVideo();
   document.body.style.overflow = "hidden";
   dialog.showModal();
 }
@@ -141,6 +163,8 @@ function releaseVideo() {
   video.removeAttribute("src");
   video.load();
   video.hidden = true;
+  activeSources = [];
+  activeSourceIndex = 0;
   document.body.style.overflow = previousOverflow;
   const trigger = lastTrigger;
   lastTrigger = null;
@@ -177,10 +201,24 @@ dialog.addEventListener("click", (event) => {
 });
 video.addEventListener("error", () => {
   if (!modalActive || !video.getAttribute("src")) return;
+  if (activeSourceIndex + 1 < activeSources.length) {
+    activeSourceIndex += 1;
+    loadActiveVideo();
+    return;
+  }
   video.pause();
   video.hidden = true;
-  videoStatus.hidden = false;
+  videoFeedback.hidden = false;
+  videoRetry.hidden = false;
   videoStatus.textContent = "视频暂时无法播放，请稍后再试。";
+});
+video.addEventListener("loadedmetadata", () => {
+  if (!modalActive) return;
+  videoFeedback.hidden = true;
+});
+videoRetry.addEventListener("click", () => {
+  activeSourceIndex = 0;
+  loadActiveVideo();
 });
 
 const navLinks = [...document.querySelectorAll('nav a[href^="#"]')];
@@ -208,3 +246,7 @@ if (typeof IntersectionObserver !== "undefined") {
 window.addEventListener("scroll", updateNavigation, { passive: true });
 window.addEventListener("resize", updateNavigation);
 updateNavigation();
+
+if (typeof navigator !== "undefined" && "serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}), { once: true });
+}

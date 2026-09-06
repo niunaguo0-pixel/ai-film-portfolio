@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="AI影视创作者个人作品集，展示AI短剧与AI广告片。">
+    <meta name="theme-color" content="#101010">
+    <meta name="color-scheme" content="dark">
     <title>AI影视创作者作品集</title>
     <link rel="stylesheet" href="./styles.css">
   </head>
@@ -64,8 +66,11 @@
     <dialog id="video-dialog" aria-labelledby="video-title">
       <button class="button dialog-close" type="button" data-close-dialog aria-label="关闭视频">关闭 <span aria-hidden="true">×</span></button>
       <h2 id="video-title"></h2>
-      <p id="video-status" role="status">视频素材即将更新</p>
-      <video controls playsinline preload="metadata" hidden></video>
+      <div id="video-feedback">
+        <p id="video-status" role="status">视频素材即将更新</p>
+        <button class="button" id="video-retry" type="button" hidden>重新加载</button>
+      </div>
+      <video controls playsinline preload="none" controlslist="nodownload" hidden></video>
     </dialog>
     <script type="module" src="./src/app.js"></script>
   </body>
