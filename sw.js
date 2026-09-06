@@ -8,7 +8,6 @@ const APP_SHELL = [
   "./assets/posters-web/dont-look-back.webp",
   "./assets/posters-web/the-last-deal.webp",
   "./assets/posters-web/guiyanlou.webp",
-  "./assets/posters-web/hotel-cleaner-ceo.webp",
   "./assets/posters-web/speed-prologue.webp",
   "./assets/posters-web/light-is-her.webp",
   "./assets/other/cat-ip-01.webp",

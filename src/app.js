@@ -1,4 +1,4 @@
-import { WORK_CATEGORIES, portfolioItems, filterPortfolio, findPortfolioItem } from "./portfolio-data.js?v=6";
+import { WORK_CATEGORIES, portfolioItems, filterPortfolio, findPortfolioItem } from "./portfolio-data.js?v=8";
 
 const filters = document.querySelector("#work-filters");
 const grid = document.querySelector("#work-grid");
