@@ -1,4 +1,4 @@
-import { WORK_CATEGORIES, portfolioItems, filterPortfolio, findPortfolioItem } from "./portfolio-data.js?v=10";
+import { WORK_CATEGORIES, portfolioItems, filterPortfolio, findPortfolioItem } from "./portfolio-data.js?v=11";
 
 const filters = document.querySelector("#work-filters");
 const grid = document.querySelector("#work-grid");
@@ -32,6 +32,7 @@ function appendTextElement(parent, tagName, className, text) {
 function createWorkCard(item) {
   const card = document.createElement("article");
   card.className = "work-card";
+  if (item.verticalCover) card.className += " work-card--vertical";
   card.style.setProperty("--card-accent", item.accent);
 
   const playButton = document.createElement("button");
