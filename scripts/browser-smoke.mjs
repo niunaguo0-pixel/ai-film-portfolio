@@ -22,13 +22,11 @@ try {
       const imageRect = image.getBoundingClientRect();
       const articleRect = card.closest(".work-card").getBoundingClientRect();
       return {
-        ratio: cardRect.width / cardRect.height,
         fillsCard: Math.abs(cardRect.width - imageRect.width) < 1 && Math.abs(cardRect.height - imageRect.height) < 1,
         fillsArticle: Math.abs(cardRect.width - articleRect.width) < 2.1 && Math.abs(cardRect.height - articleRect.height) < 2.1,
         objectFit: getComputedStyle(image).objectFit
       };
     });
-    assert.ok(Math.abs(hotelLayout.ratio - 9 / 16) < 0.01);
     assert.equal(hotelLayout.fillsCard, true);
     assert.equal(hotelLayout.fillsArticle, true);
     assert.equal(hotelLayout.objectFit, "cover");

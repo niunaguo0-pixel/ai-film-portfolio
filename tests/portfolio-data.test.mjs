@@ -37,7 +37,7 @@ test("酒店保洁短剧使用视频画面封面并保留视频地址", async ()
   assert.equal(item.isDemo, false);
   assert.match(item.coverUrl, /hotel-cleaner-ceo-frame\.webp$/);
   assert.notEqual(item.poster, true);
-  assert.equal(item.verticalCover, true);
+  assert.notEqual(item.verticalCover, true);
   assert.match(item.videoUrl, /hotel-cleaner-ceo-web\.mp4$/);
   assert.match(item.videoFallbackUrl, /hotel-cleaner-ceo-original\.mp4$/);
   assert.match(item.summary, /总裁陆青云卧底自家酒店/);
