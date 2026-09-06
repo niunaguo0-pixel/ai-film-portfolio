@@ -1,4 +1,4 @@
-import { WORK_CATEGORIES, portfolioItems, filterPortfolio, findPortfolioItem } from "./portfolio-data.js?v=9";
+import { WORK_CATEGORIES, portfolioItems, filterPortfolio, findPortfolioItem } from "./portfolio-data.js?v=10";
 
 const filters = document.querySelector("#work-filters");
 const grid = document.querySelector("#work-grid");
@@ -36,6 +36,7 @@ function createWorkCard(item) {
 
   const playButton = document.createElement("button");
   playButton.className = item.poster ? "work-card__play work-card__play--poster" : "work-card__play";
+  if (item.verticalCover) playButton.className += " work-card__play--vertical";
   playButton.type = "button";
   playButton.dataset.workId = item.id;
   const isGallery = Boolean(item.gallery?.length);

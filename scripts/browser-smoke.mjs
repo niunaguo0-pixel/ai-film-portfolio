@@ -15,6 +15,20 @@ try {
     await page.goto(baseUrl, { waitUntil: "networkidle" });
     assert.equal(await page.locator(".work-card").count(), portfolioItems.length);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
+    const hotelCard = page.getByRole("button", { name: "播放《我在酒店当保洁，顺手收了个总裁》" });
+    const hotelLayout = await hotelCard.evaluate(card => {
+      const image = card.querySelector("img");
+      const cardRect = card.getBoundingClientRect();
+      const imageRect = image.getBoundingClientRect();
+      return {
+        ratio: cardRect.width / cardRect.height,
+        fillsCard: Math.abs(cardRect.width - imageRect.width) < 1 && Math.abs(cardRect.height - imageRect.height) < 1,
+        objectFit: getComputedStyle(image).objectFit
+      };
+    });
+    assert.ok(Math.abs(hotelLayout.ratio - 9 / 16) < 0.01);
+    assert.equal(hotelLayout.fillsCard, true);
+    assert.equal(hotelLayout.objectFit, "cover");
 
     await page.getByRole("button", { name: "播放《DON’T LOOK BACK》" }).click();
     const video = page.locator("#video-dialog video");
