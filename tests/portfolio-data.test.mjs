@@ -31,15 +31,16 @@ test("归雁楼归入国内并保留用户介绍及媒体路径", async () => {
   }
 });
 
-test("酒店保洁短剧不显示海报并保留视频地址", () => {
+test("酒店保洁短剧使用视频画面封面并保留视频地址", async () => {
   const item = findPortfolioItem(portfolioItems, "hotel-cleaner-ceo");
   assert.equal(item.region, "国内");
   assert.equal(item.isDemo, false);
-  assert.equal(item.coverUrl, "");
+  assert.match(item.coverUrl, /hotel-cleaner-ceo-frame\.webp$/);
   assert.notEqual(item.poster, true);
   assert.match(item.videoUrl, /hotel-cleaner-ceo-web\.mp4$/);
   assert.match(item.videoFallbackUrl, /hotel-cleaner-ceo-original\.mp4$/);
   assert.match(item.summary, /总裁陆青云卧底自家酒店/);
+  assert.ok((await readFile(new URL(`../${item.coverUrl}`, import.meta.url))).length > 0);
 });
 
 test("作品只使用批准的分类且没有演示项目", () => {

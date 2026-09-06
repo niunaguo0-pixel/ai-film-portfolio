@@ -51,7 +51,7 @@ export const portfolioItems = Object.freeze([
     category: "AI短剧",
     region: "国内",
     isDemo: false,
-    coverUrl: "",
+    coverUrl: "./assets/posters-web/hotel-cleaner-ceo-frame.webp",
     duration: "02:31",
     summary: "总裁陆青云卧底自家酒店装笨查亏损，被保洁陈圆圆当成新人罩着，两人联手花式反杀黑心经理，连反派都成了“神助攻黑粉”，一路打脸逆袭成总裁夫人。",
     videoUrl: "./assets/videos/hotel-cleaner-ceo-web.mp4",
