@@ -58,9 +58,8 @@ function setup(withObserver = true) {
 }
 
 test("空视频作品打开状态弹窗并锁定滚动", () => {
-  const { nodes, document } = setup();
-  const trigger = new Element(); trigger.dataset.workId = data.portfolioItems.find(item => !item.videoUrl).id;
-  nodes["#work-grid"].emit("click", { target: trigger });
+  const { nodes, document, context } = setup();
+  context.openVideo({ title: "待更新作品", videoUrl: "" }, new Element());
   assert.equal(nodes["#video-dialog"].open, true);
   assert.equal(nodes["#video-status"].textContent, "视频素材即将更新");
   assert.equal(nodes.video.hidden, true);
@@ -125,7 +124,7 @@ test("导航更新当前区域并在页面底部选择联系区域", () => {
 test("缺少IntersectionObserver时作品和分类仍正常渲染", () => {
   const { nodes } = setup(false);
   assert.equal(nodes["#work-grid"].children.length, data.portfolioItems.length);
-  assert.equal(nodes["#work-filters"].children.length, 3);
+  assert.equal(nodes["#work-filters"].children.length, 4);
 });
 
 test("AI短剧地区筛选与切换重置", () => {
@@ -143,6 +142,8 @@ test("AI短剧地区筛选与切换重置", () => {
   main.emit("click", { target: main.children[2] });
   assert.equal(regions.hidden, true);
   assert.equal(regions.children[0].getAttribute("aria-pressed"), "true");
+  main.emit("click", { target: main.children[3] });
+  assert.equal(nodes["#work-grid"].children[0].textContent, "该分类作品即将更新");
 });
 
 test("每张作品卡片都有可见的查看影片提示", () => {

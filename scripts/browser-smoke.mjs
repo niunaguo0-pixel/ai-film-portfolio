@@ -7,7 +7,8 @@ const browser = await firefox.launch({ headless: true });
 
 try {
   for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
-    const page = await browser.newPage({ viewport });
+    const context = await browser.newContext({ viewport, serviceWorkers: "block" });
+    const page = await context.newPage();
     const errors = [];
     page.on("pageerror", error => errors.push(error.message));
 
@@ -22,7 +23,7 @@ try {
     assert.match(await video.getAttribute("src"), /assets\/videos\/dont-look-back-web\.mp4$/);
     assert.equal(errors.length, 0);
     await page.getByRole("button", { name: "关闭视频" }).click();
-    await page.close();
+    await context.close();
   }
 } finally {
   await browser.close();

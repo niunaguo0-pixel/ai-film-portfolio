@@ -42,8 +42,10 @@ test("酒店保洁短剧作为新国内作品并使用原片地址", async () =>
 });
 
 test("作品只使用两个批准的分类", () => {
-  assert.deepEqual(WORK_CATEGORIES, ["全部", "AI短剧", "AI广告片"]);
+  assert.deepEqual(WORK_CATEGORIES, ["全部", "AI短剧", "AI广告片", "其他"]);
   assert.ok(portfolioItems.every((item) => ["AI短剧", "AI广告片"].includes(item.category)));
+  assert.ok(portfolioItems.every(item => item.isDemo === false));
+  assert.equal(portfolioItems.length, 6);
 });
 
 test("两个正式广告片使用网页视频和原片备用地址", async () => {

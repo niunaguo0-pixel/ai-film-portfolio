@@ -1,4 +1,4 @@
-export const WORK_CATEGORIES = Object.freeze(["全部", "AI短剧", "AI广告片"]);
+export const WORK_CATEGORIES = Object.freeze(["全部", "AI短剧", "AI广告片", "其他"]);
 
 export const portfolioItems = Object.freeze([
   {
@@ -59,28 +59,6 @@ export const portfolioItems = Object.freeze([
     videoFallbackUrl: "https://github.com/niunaguo0-pixel/ai-film-portfolio/releases/download/portfolio-media/hotel-cleaner-ceo-original.mp4",
     accent: "#9a7445",
     order: 0.9
-  },
-  {
-    id: "drama-mist-letter",
-    title: "雾城来信",
-    category: "AI短剧",
-    coverUrl: "",
-    duration: "01:24",
-    summary: "一封迟到多年的信，让两段被遗忘的记忆重新交汇。",
-    videoUrl: "",
-    accent: "#71685f",
-    order: 1
-  },
-  {
-    id: "drama-midnight-record",
-    title: "午夜档案",
-    category: "AI短剧",
-    coverUrl: "",
-    duration: "00:58",
-    summary: "值夜员在旧档案中发现了一段仍在发生的影像。",
-    videoUrl: "",
-    accent: "#4f5960",
-    order: 2
   },
   {
     id: "ad-speed-prologue",
