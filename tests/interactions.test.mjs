@@ -134,7 +134,7 @@ test("导航更新当前区域并在页面底部选择联系区域", () => {
 
 test("缺少IntersectionObserver时作品和分类仍正常渲染", () => {
   const { nodes } = setup(false);
-  assert.equal(nodes["#work-grid"].children.length, data.portfolioItems.length);
+  assert.equal(nodes["#work-grid"].children.length, data.portfolioItems.length - 1);
   assert.equal(nodes["#work-filters"].children.length, 4);
 });
 
@@ -157,9 +157,18 @@ test("AI短剧地区筛选与切换重置", () => {
   assert.equal(nodes["#work-grid"].children.length, 3);
 });
 
+test("酒店短剧与疾速序章在全部视图中叠放", () => {
+  const { nodes } = setup();
+  const stack = nodes["#work-grid"].children.find(child => child.className === "work-stack");
+  assert.ok(stack);
+  assert.equal(stack.children[0].children[0].dataset.workId, "hotel-cleaner-ceo");
+  assert.equal(stack.children[1].children[0].dataset.workId, "ad-speed-prologue");
+});
+
 test("每张作品卡片都有对应的查看提示", () => {
   const { nodes } = setup();
-  nodes["#work-grid"].children.forEach((card, index) => {
+  const cards = nodes["#work-grid"].children.flatMap(child => child.className === "work-stack" ? child.children : [child]);
+  cards.forEach((card, index) => {
     const playButton = card.children[0];
     const expected = data.portfolioItems[index].gallery?.length ? "查看作品 ↗" : "查看影片 ↗";
     assert.ok(playButton.children.some(child => child.textContent === expected));

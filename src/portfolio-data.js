@@ -70,7 +70,7 @@ export const portfolioItems = Object.freeze([
     videoUrl: "./assets/videos/speed-prologue-web.mp4",
     videoFallbackUrl: "https://github.com/niunaguo0-pixel/ai-film-portfolio/releases/download/portfolio-media/speed-prologue-original.mp4",
     accent: "#8a6d4c",
-    order: 3
+    order: 0.91
   },
   {
     id: "ad-light-is-her",

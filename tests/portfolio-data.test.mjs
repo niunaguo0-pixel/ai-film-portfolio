@@ -70,7 +70,10 @@ test("按分类筛选并保留展示顺序", () => {
   assert.ok(dramas.length > 0);
   assert.ok(dramas.every((item) => item.category === "AI短剧"));
   assert.deepEqual(dramas.map((item) => item.order), [...dramas.map((item) => item.order)].sort((a, b) => a - b));
-  assert.deepEqual(filterPortfolio(portfolioItems, "全部"), portfolioItems);
+  const all = filterPortfolio(portfolioItems, "全部");
+  assert.deepEqual(all.map((item) => item.order), [...all.map((item) => item.order)].sort((a, b) => a - b));
+  const hotelIndex = all.findIndex(item => item.id === "hotel-cleaner-ceo");
+  assert.equal(all[hotelIndex + 1].id, "ad-speed-prologue");
 });
 
 test("其他分类包含三组完整图片项目", async () => {

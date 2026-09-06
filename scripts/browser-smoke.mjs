@@ -37,6 +37,13 @@ try {
     assert.equal(hotelLayout.fillsCard, true);
     assert.equal(hotelLayout.fillsArticle, true);
     assert.equal(hotelLayout.objectFit, "cover");
+    const stacked = await page.evaluate(() => {
+      const hotel = document.querySelector('[data-work-id="hotel-cleaner-ceo"]')?.closest(".work-card");
+      const speed = document.querySelector('[data-work-id="ad-speed-prologue"]')?.closest(".work-card");
+      const stack = hotel?.closest(".work-stack");
+      return Boolean(stack && stack.children[0] === hotel && stack.children[1] === speed);
+    });
+    assert.equal(stacked, true);
 
     await page.getByRole("button", { name: "播放《DON’T LOOK BACK》" }).click();
     const video = page.locator("#video-dialog video");

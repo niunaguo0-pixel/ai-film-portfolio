@@ -1,4 +1,4 @@
-import { WORK_CATEGORIES, portfolioItems, filterPortfolio, findPortfolioItem } from "./portfolio-data.js?v=12";
+import { WORK_CATEGORIES, portfolioItems, filterPortfolio, findPortfolioItem } from "./portfolio-data.js?v=13";
 
 const filters = document.querySelector("#work-filters");
 const grid = document.querySelector("#work-grid");
@@ -82,9 +82,19 @@ function renderFilters(activeCategory = "全部") {
 
 function renderWorks(category = "全部", region = "全部") {
   const fragment = document.createDocumentFragment();
-
   const items = filterPortfolio(portfolioItems, category, region);
-  for (const item of items) {
+
+  for (let index = 0; index < items.length; index += 1) {
+    const item = items[index];
+    const next = items[index + 1];
+    if (item.id === "hotel-cleaner-ceo" && next?.id === "ad-speed-prologue") {
+      const stack = document.createElement("div");
+      stack.className = "work-stack";
+      stack.append(createWorkCard(item), createWorkCard(next));
+      fragment.append(stack);
+      index += 1;
+      continue;
+    }
     fragment.append(createWorkCard(item));
   }
 
