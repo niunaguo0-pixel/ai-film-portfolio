@@ -1,4 +1,4 @@
-import { WORK_CATEGORIES, portfolioItems, filterPortfolio, findPortfolioItem } from "./portfolio-data.js?v=5";
+import { WORK_CATEGORIES, portfolioItems, filterPortfolio, findPortfolioItem } from "./portfolio-data.js?v=6";
 
 const filters = document.querySelector("#work-filters");
 const grid = document.querySelector("#work-grid");
@@ -267,5 +267,12 @@ window.addEventListener("resize", updateNavigation);
 updateNavigation();
 
 if (typeof navigator !== "undefined" && "serviceWorker" in navigator) {
-  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}), { once: true });
+  navigator.serviceWorker.getRegistrations()
+    .then(registrations => Promise.all(registrations.map(registration => registration.unregister())))
+    .catch(() => {});
+}
+if (typeof caches !== "undefined") {
+  caches.keys()
+    .then(keys => Promise.all(keys.filter(key => key.startsWith("ai-film-portfolio-")).map(key => caches.delete(key))))
+    .catch(() => {});
 }
