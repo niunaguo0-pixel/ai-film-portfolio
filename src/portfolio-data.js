@@ -39,9 +39,9 @@ export const portfolioItems = Object.freeze([
     isDemo: false,
     poster: true,
     coverUrl: "./assets/posters-web/guiyanlou.webp",
-    duration: "02:28",
+    duration: "02:36",
     summary: "为追查母亲死于二十年前大火的真相，林夏搬进能靠转发短信转移灾祸的归雁楼，揭穿老住户守护的秘密，并将一场火灾转给他，逼他面对父辈留下的血债。",
-    videoUrl: "./assets/videos/guiyanlou-web-optimized.mp4",
+    videoUrl: "./assets/videos/guiyanlou-web.mp4",
     accent: "#665844",
     order: 0.75
   },
