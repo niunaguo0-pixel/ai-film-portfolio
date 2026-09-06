@@ -13,6 +13,11 @@ try {
     page.on("pageerror", error => errors.push(error.message));
 
     await page.goto(baseUrl, { waitUntil: "networkidle" });
+    await page.waitForFunction(
+      expected => document.querySelectorAll(".work-card").length === expected,
+      portfolioItems.length,
+      { timeout: 20_000 }
+    );
     assert.equal(await page.locator(".work-card").count(), portfolioItems.length);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
     const hotelCard = page.getByRole("button", { name: "播放《我在酒店当保洁，顺手收了个总裁》" });
