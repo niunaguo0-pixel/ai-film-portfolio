@@ -85,6 +85,51 @@ export const portfolioItems = Object.freeze([
     videoFallbackUrl: "https://github.com/niunaguo0-pixel/ai-film-portfolio/releases/download/portfolio-media/light-is-her-original.mp4",
     accent: "#5d493c",
     order: 4
+  },
+  {
+    id: "other-cat-ip-brand",
+    title: "猫咪 IP 与品牌空间设计",
+    category: "其他",
+    isDemo: false,
+    coverUrl: "./assets/other/cat-ip-01.webp",
+    summary: "从角色设定、品牌视觉、包装周边到线下零售空间的猫咪 IP 系统设计。",
+    gallery: [
+      "./assets/other/cat-ip-01.webp",
+      "./assets/other/cat-ip-02.webp",
+      "./assets/other/cat-ip-03.webp",
+      "./assets/other/cat-ip-04.webp",
+      "./assets/other/cat-ip-05.webp",
+      "./assets/other/cat-ip-06.webp"
+    ],
+    accent: "#c58f78",
+    order: 5
+  },
+  {
+    id: "other-fashion-commerce",
+    title: "女装电商视觉",
+    category: "其他",
+    isDemo: false,
+    coverUrl: "./assets/other/fashion-01.webp",
+    summary: "围绕针织女装打造的详情页、材质卖点、配色与穿搭场景视觉。",
+    gallery: [
+      "./assets/other/fashion-01.webp",
+      "./assets/other/fashion-02.webp",
+      "./assets/other/fashion-03.webp",
+      "./assets/other/fashion-04.webp"
+    ],
+    accent: "#b99072",
+    order: 6
+  },
+  {
+    id: "other-golden-night",
+    title: "鎏金假面夜活动海报",
+    category: "其他",
+    isDemo: false,
+    coverUrl: "./assets/other/golden-night-01.webp",
+    summary: "以黑金光影与假面小提琴手为核心的高端音乐活动主视觉海报。",
+    gallery: ["./assets/other/golden-night-01.webp"],
+    accent: "#ad7a2d",
+    order: 7
   }
 ]);
 

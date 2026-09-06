@@ -1,4 +1,4 @@
-import { WORK_CATEGORIES, portfolioItems, filterPortfolio, findPortfolioItem } from "./portfolio-data.js?v=4";
+import { WORK_CATEGORIES, portfolioItems, filterPortfolio, findPortfolioItem } from "./portfolio-data.js?v=5";
 
 const filters = document.querySelector("#work-filters");
 const grid = document.querySelector("#work-grid");
@@ -38,7 +38,8 @@ function createWorkCard(item) {
   playButton.className = item.poster ? "work-card__play work-card__play--poster" : "work-card__play";
   playButton.type = "button";
   playButton.dataset.workId = item.id;
-  playButton.setAttribute("aria-label", `播放《${item.title}》`);
+  const isGallery = Boolean(item.gallery?.length);
+  playButton.setAttribute("aria-label", `${isGallery ? "查看" : "播放"}《${item.title}》`);
 
   if (item.coverUrl) {
     const cover = document.createElement("img");
@@ -56,7 +57,7 @@ function createWorkCard(item) {
   if (item.isDemo !== false) appendTextElement(metadata, "span", "work-card__demo", "演示项目");
   appendTextElement(playButton, "span", "work-card__title", item.title);
   appendTextElement(playButton, "span", "work-card__summary", item.summary);
-  appendTextElement(playButton, "span", "work-card__action", "查看影片 ↗").setAttribute("aria-hidden", "true");
+  appendTextElement(playButton, "span", "work-card__action", `${isGallery ? "查看作品" : "查看影片"} ↗`).setAttribute("aria-hidden", "true");
   playButton.prepend(metadata);
 
   card.append(playButton);
@@ -119,6 +120,7 @@ const videoTitle = dialog.querySelector("#video-title");
 const videoStatus = dialog.querySelector("#video-status");
 const videoFeedback = dialog.querySelector("#video-feedback");
 const videoRetry = dialog.querySelector("#video-retry");
+const imageGallery = dialog.querySelector("#image-gallery");
 let lastTrigger = null;
 let previousOverflow = "";
 let modalActive = false;
@@ -143,15 +145,30 @@ function openVideo(item, trigger = document.activeElement) {
   modalActive = true;
   videoTitle.textContent = item.title;
   videoStatus.textContent = "视频素材即将更新";
+  imageGallery.replaceChildren();
+  const hasGallery = Boolean(item.gallery?.length);
+  imageGallery.hidden = !hasGallery;
+  if (hasGallery) {
+    const fragment = document.createDocumentFragment();
+    item.gallery.forEach((source, index) => {
+      const image = document.createElement("img");
+      image.src = source;
+      image.alt = `${item.title}，第 ${index + 1} 张`;
+      image.loading = index === 0 ? "eager" : "lazy";
+      image.decoding = "async";
+      fragment.append(image);
+    });
+    imageGallery.append(fragment);
+  }
   activeSources = [item.videoUrl, item.videoFallbackUrl].filter((source, index, sources) =>
     source?.trim() && sources.indexOf(source) === index
   );
   activeSourceIndex = 0;
   const hasVideo = activeSources.length > 0;
   video.hidden = !hasVideo;
-  videoFeedback.hidden = false;
+  videoFeedback.hidden = hasGallery;
   videoRetry.hidden = true;
-  if (hasVideo) loadActiveVideo();
+  if (hasVideo && !hasGallery) loadActiveVideo();
   document.body.style.overflow = "hidden";
   dialog.showModal();
 }
@@ -163,6 +180,8 @@ function releaseVideo() {
   video.removeAttribute("src");
   video.load();
   video.hidden = true;
+  imageGallery.hidden = true;
+  imageGallery.replaceChildren();
   activeSources = [];
   activeSourceIndex = 0;
   document.body.style.overflow = previousOverflow;

@@ -41,11 +41,11 @@ test("酒店保洁短剧作为新国内作品并使用原片地址", async () =>
   assert.ok((await readFile(new URL(`../${item.coverUrl}`, import.meta.url))).length > 0);
 });
 
-test("作品只使用两个批准的分类", () => {
+test("作品只使用批准的分类且没有演示项目", () => {
   assert.deepEqual(WORK_CATEGORIES, ["全部", "AI短剧", "AI广告片", "其他"]);
-  assert.ok(portfolioItems.every((item) => ["AI短剧", "AI广告片"].includes(item.category)));
+  assert.ok(portfolioItems.every((item) => ["AI短剧", "AI广告片", "其他"].includes(item.category)));
   assert.ok(portfolioItems.every(item => item.isDemo === false));
-  assert.equal(portfolioItems.length, 6);
+  assert.equal(portfolioItems.length, 9);
 });
 
 test("两个正式广告片使用网页视频和原片备用地址", async () => {
@@ -68,6 +68,18 @@ test("按分类筛选并保留展示顺序", () => {
   assert.ok(dramas.every((item) => item.category === "AI短剧"));
   assert.deepEqual(dramas.map((item) => item.order), [...dramas.map((item) => item.order)].sort((a, b) => a - b));
   assert.deepEqual(filterPortfolio(portfolioItems, "全部"), portfolioItems);
+});
+
+test("其他分类包含三组完整图片项目", async () => {
+  const items = filterPortfolio(portfolioItems, "其他");
+  assert.deepEqual(items.map(item => item.title), ["猫咪 IP 与品牌空间设计", "女装电商视觉", "鎏金假面夜活动海报"]);
+  assert.deepEqual(items.map(item => item.gallery.length), [6, 4, 1]);
+  for (const item of items) {
+    assert.equal(item.coverUrl, item.gallery[0]);
+    for (const path of item.gallery) {
+      assert.ok((await readFile(new URL(`../${path}`, import.meta.url))).length > 0);
+    }
+  }
 });
 
 test("通过ID查找作品", () => {

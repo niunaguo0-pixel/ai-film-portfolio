@@ -23,6 +23,12 @@ try {
     assert.match(await video.getAttribute("src"), /assets\/videos\/dont-look-back-web\.mp4$/);
     assert.equal(errors.length, 0);
     await page.getByRole("button", { name: "关闭视频" }).click();
+
+    await page.getByRole("button", { name: "其他", exact: true }).click();
+    assert.equal(await page.locator(".work-card").count(), 3);
+    await page.getByRole("button", { name: "查看《猫咪 IP 与品牌空间设计》" }).click();
+    assert.equal(await page.locator("#image-gallery img").count(), 6);
+    await page.getByRole("button", { name: "关闭视频" }).click();
     await context.close();
   }
 } finally {

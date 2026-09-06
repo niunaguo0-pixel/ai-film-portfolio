@@ -14,7 +14,7 @@ class Element {
   }
   append(...nodes) { this.children.push(...nodes); }
   prepend(node) { this.children.unshift(node); }
-  replaceChildren(node) { this.children = node.children; }
+  replaceChildren(node) { this.children = node ? node.children : []; }
   setAttribute(key, value) { this.attributes[key] = value; }
   getAttribute(key) { return this.attributes[key] ?? null; }
   removeAttribute(key) { delete this.attributes[key]; }
@@ -37,7 +37,7 @@ const source = (await readFile(new URL("../src/app.js", import.meta.url), "utf8"
   .replace(/^import .*?;\s*/s, "");
 
 function setup(withObserver = true) {
-  const nodes = Object.fromEntries(["#region-filters", "#work-filters", "#work-grid", "#video-dialog", "video", "#video-title", "#video-status", "#video-feedback", "#video-retry", "[data-close-dialog]"].map(key => [key, new Element()]));
+  const nodes = Object.fromEntries(["#region-filters", "#work-filters", "#work-grid", "#video-dialog", "video", "#video-title", "#video-status", "#video-feedback", "#video-retry", "#image-gallery", "[data-close-dialog]"].map(key => [key, new Element()]));
   nodes["#video-dialog"].selectors = nodes;
   const sections = ["home", "work", "about", "contact"].map((id, index) => Object.assign(new Element(), { id, rect: { top: index * 1000, bottom: (index + 1) * 1000 } }));
   const links = sections.map(section => { const link = new Element(); link.setAttribute("href", `#${section.id}`); return link; });
@@ -108,6 +108,17 @@ test("主视频失败时自动切换备用源", () => {
   assert.match(nodes["#video-status"].textContent, /备用视频源/);
 });
 
+test("图片项目打开完整作品图集", () => {
+  const { nodes, context } = setup();
+  const item = data.portfolioItems.find(work => work.gallery?.length);
+  context.openVideo(item, new Element());
+  assert.equal(nodes["#video-dialog"].open, true);
+  assert.equal(nodes.video.hidden, true);
+  assert.equal(nodes["#video-feedback"].hidden, true);
+  assert.equal(nodes["#image-gallery"].hidden, false);
+  assert.equal(nodes["#image-gallery"].children[0].children.length, item.gallery.length);
+});
+
 test("导航更新当前区域并在页面底部选择联系区域", () => {
   const { links, sections, window, notify } = setup();
   assert.equal(links[0].getAttribute("aria-current"), "location");
@@ -143,15 +154,16 @@ test("AI短剧地区筛选与切换重置", () => {
   assert.equal(regions.hidden, true);
   assert.equal(regions.children[0].getAttribute("aria-pressed"), "true");
   main.emit("click", { target: main.children[3] });
-  assert.equal(nodes["#work-grid"].children[0].textContent, "该分类作品即将更新");
+  assert.equal(nodes["#work-grid"].children.length, 3);
 });
 
-test("每张作品卡片都有可见的查看影片提示", () => {
+test("每张作品卡片都有对应的查看提示", () => {
   const { nodes } = setup();
-  for (const card of nodes["#work-grid"].children) {
+  nodes["#work-grid"].children.forEach((card, index) => {
     const playButton = card.children[0];
-    assert.ok(playButton.children.some(child => child.textContent === "查看影片 ↗"));
+    const expected = data.portfolioItems[index].gallery?.length ? "查看作品 ↗" : "查看影片 ↗";
+    assert.ok(playButton.children.some(child => child.textContent === expected));
     assert.ok(playButton.children.every(child => child.className !== "work-card__duration"));
     assert.ok(playButton.children.every(child => child.className !== "work-card__index"));
-  }
+  });
 });

@@ -1,16 +1,27 @@
-const CACHE_NAME = "ai-film-portfolio-v4";
+const CACHE_NAME = "ai-film-portfolio-v5";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./styles.css",
-  "./src/app.js?v=4",
-  "./src/portfolio-data.js?v=4",
+  "./src/app.js?v=5",
+  "./src/portfolio-data.js?v=5",
   "./assets/posters-web/dont-look-back.webp",
   "./assets/posters-web/the-last-deal.webp",
   "./assets/posters-web/guiyanlou.webp",
   "./assets/posters-web/hotel-cleaner-ceo.webp",
   "./assets/posters-web/speed-prologue.webp",
-  "./assets/posters-web/light-is-her.webp"
+  "./assets/posters-web/light-is-her.webp",
+  "./assets/other/cat-ip-01.webp",
+  "./assets/other/cat-ip-02.webp",
+  "./assets/other/cat-ip-03.webp",
+  "./assets/other/cat-ip-04.webp",
+  "./assets/other/cat-ip-05.webp",
+  "./assets/other/cat-ip-06.webp",
+  "./assets/other/fashion-01.webp",
+  "./assets/other/fashion-02.webp",
+  "./assets/other/fashion-03.webp",
+  "./assets/other/fashion-04.webp",
+  "./assets/other/golden-night-01.webp"
 ];
 
 self.addEventListener("install", event => {
